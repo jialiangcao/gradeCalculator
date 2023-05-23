@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
-public class Class {
+public class Calculation {
   private ArrayList<Assignment> minor;
   private ArrayList<Assignment> major;
 
-  public Class(ArrayList<Assignment> minor, ArrayList<Assignment> major){
+  public Calculation(ArrayList<Assignment> minor, ArrayList<Assignment> major){
     this.minor = minor;
     this.major = major;
   }
