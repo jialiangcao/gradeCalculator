@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Subject {
-  private String subjectName;
+  private final String subjectName;
   private double grade;
   private int majorCount;
   private int minorCount;

@@ -21,8 +21,14 @@ public class Calculation {
       majorTotal += j.getGrade();
       majorCount++;
     }
-    double minorAverage = minorTotal/minorCount;
-    double majorAverage = majorTotal/majorCount;
+    double minorAverage = 0;
+    double majorAverage = 0;
+    if (minorCount != 0) {
+      minorAverage = minorTotal/minorCount;
+    }
+    if (majorCount != 0) {
+      majorAverage = majorTotal/majorCount;
+    }
     return Math.round((((minorPercent*0.01)*minorAverage)+((majorPercent*0.01)*majorAverage))*10.0)/10.0;
   }
 }

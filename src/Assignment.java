@@ -1,6 +1,6 @@
   public class Assignment {
-    private double grade;
-    private boolean isMajor;
+    private final double grade;
+    private final boolean isMajor;
 
     public Assignment(double grade, boolean isMajor){
       this.grade = grade;

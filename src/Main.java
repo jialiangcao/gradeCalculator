@@ -12,9 +12,9 @@ public class Main {
     ArrayList<Assignment> minors = new ArrayList<>();
     ArrayList<Assignment> majors = new ArrayList<>();
     ArrayList<Subject> subjects = new ArrayList<>();
-    int minorCount = 0;
-    int majorCount = 0;
-    double overAllAverage = 0.0;
+
+
+    double overAllAverage;
 
     System.out.println("Hello student, welcome to the grade calculator!");
     System.out.print("Name: ");
@@ -22,7 +22,6 @@ public class Main {
 
     int subjectCount = -1;
     try {
-      File f = new File(name + "Grades.txt");
       BufferedReader reader = new BufferedReader(new FileReader(name + "Grades.txt"));
       String line;
       while ((line = reader.readLine()) != null) {
@@ -42,7 +41,7 @@ public class Main {
           boolean cont = true;
           while(cont) {
             double value = 0;
-            if (values.indexOf(",") > -1) {
+            if (values.contains(",")) {
               value = Double.parseDouble(values.substring(0, values.indexOf(",")));
               values = values.substring(values.indexOf(",") + 2);
             } else {
@@ -66,19 +65,18 @@ public class Main {
 
         }
       }
-     // subjects.remove(subjects.size());
       System.out.println("Loaded File!");
       reader.close();
     } catch (IOException e) {
-
+      System.out.println("You have no previous file. Creating file.");
     }
 
     int input = 0;
-    while (!(input == 4)) {
+    while (input != 4) {
       System.out.println("\n1. All Class Averages\n2. Add Class\n3. Edit Class\n4. Quit");
       System.out.print("Input: ");
       input = scan.nextInt();
-      if (input == 1 && subjects.size() > 0) {
+      if (input == 1 && !subjects.isEmpty()) {
         System.out.println();
         double total = 0;
         for (Subject subject : subjects) {
@@ -94,37 +92,37 @@ public class Main {
         minors.clear();
         majors.clear();
         System.out.print("Class Name: ");
-        String subjectName = scan.nextLine();
+        String subjectName;
         subjectName = scan.nextLine();
         Subject subject = new Subject(subjectName);
         double inputNum = 0;
 
         System.out.println("\n====== MINOR ASSESSMENTS ======");
-        while (!(inputNum == -1)) {
+        while (inputNum != -1) {
           System.out.print("Input one minor assignment grade, -1 to finish: ");
           inputNum = scan.nextDouble();
-          if (!(inputNum == -1)) {
+          if (inputNum != -1) {
             Assignment i = new Assignment(inputNum, false);
             minors.add(i);
             subject.increaseMinorCount();
           }
         }
-        for (int i = 0; i < minors.size(); i++) {
-          subject.addMinor(minors.get(i));
+        for (Assignment minor : minors) {
+          subject.addMinor(minor);
         }
         System.out.println("====== MAJOR ASSESSMENTS ======");
         inputNum = 0;
-        while (!(inputNum == -1)) {
+        while (inputNum != -1) {
           System.out.print("Input your major grades, -1 to finish: ");
           inputNum = scan.nextDouble();
-          if (!(inputNum == -1)) {
+          if (inputNum != -1) {
             Assignment i = new Assignment(inputNum, true);
             majors.add(i);
             subject.increaseMajorCount();
           }
         }
-        for (int i = 0; i < majors.size(); i++) {
-          subject.addMajor(majors.get(i));
+        for (Assignment major : majors) {
+          subject.addMajor(major);
         }
         Calculation grades = new Calculation(minors, majors);
 
@@ -139,7 +137,7 @@ public class Main {
         subject.setGrade(grade);
         subjects.add(subject);
         System.out.println("\nYour average for this class is: " + grade + "%");
-      } else if (input == 3 && subjects.size() > 0) {
+      } else if (input == 3 && !subjects.isEmpty()) {
         minors.clear();
         majors.clear();
         System.out.println();
@@ -156,28 +154,28 @@ public class Main {
         while (inputNum != -1) {
           System.out.print("Input one minor assignment grade, -1 to finish: ");
           inputNum = scan.nextDouble();
-          if (!(inputNum == -1)) {
+          if (inputNum != -1) {
             Assignment i = new Assignment(inputNum, false);
             minors.add(i);
             subjects.get(subjectNum).increaseMinorCount();
           }
         }
-        for (int i = 0; i < minors.size(); i++) {
-          subjects.get(subjectNum).addMinor(minors.get(i));
+        for (Assignment minor : minors) {
+          subjects.get(subjectNum).addMinor(minor);
         }
         System.out.println("====== MAJOR ASSESSMENTS ======");
         inputNum = 0;
-        while (!(inputNum == -1)) {
+        while (inputNum != -1) {
           System.out.print("Input your major grades, -1 to finish: ");
           inputNum = scan.nextDouble();
-          if (!(inputNum == -1)) {
+          if (inputNum == -1) {
             Assignment i = new Assignment(inputNum, true);
             majors.add(i);
             subjects.get(subjectNum).increaseMajorCount();
           }
         }
-        for (int i = 0; i < majors.size(); i++) {
-          subjects.get(subjectNum).addMajor(majors.get(i));
+        for (Assignment major : majors) {
+          subjects.get(subjectNum).addMajor(major);
         }
         Calculation grades = new Calculation(subjects.get(subjectNum).getMinor(), subjects.get(subjectNum).getMajor());
         double grade = grades.calculateAverage(subjects.get(subjectNum).getMinorWeight(),
@@ -193,10 +191,10 @@ public class Main {
           } else {
             System.out.println("File already exists.");
             System.out.print("Do you wish to overwrite the file? If not, the program will create a new file. (y/n): ");
-            String ans = scan.nextLine();
+            String ans;
             ans = scan.nextLine();
-            ans.toLowerCase();
-            if (ans.equals("n") || ans.equals("no")) {
+            scan.nextLine();
+            if (ans.equalsIgnoreCase("n") || ans.equalsIgnoreCase("no")) {
               System.out.print("Enter a new name: ");
               name = scan.nextLine();
               obj = new File(name + "Grades.txt");
